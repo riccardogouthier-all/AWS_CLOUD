@@ -1,7 +1,7 @@
 # Consegna Lab 05 - SCP e Access Analyzer (modello locale)
 
 ## Ambito
-Esercizio svolto in locale: AWS Organizations e IAM Access Analyzer non sono autorizzati nel Learner Lab, quindi non è stata creata nessuna risorsa cloud e sono disponibili solo gli  screenshot della CLI. Gli identificativi sono fittizi.
+Esercizio svolto in locale: AWS Organizations e IAM Access Analyzer non sono autorizzati nel Learner Lab, quindi non è stata creata nessuna risorsa cloud e non ci sono screenshot della console web di AWS: gli screenshot in `lab-05/` sono del terminale (CLI). Gli identificativi sono fittizi.
 
 ## Gerarchia
 ```

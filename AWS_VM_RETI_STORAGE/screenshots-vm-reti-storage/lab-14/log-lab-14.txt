@@ -1,0 +1,34 @@
+[
+    {
+        "BackupPlanArn": "arn:aws:backup:us-east-1:533267308404:backup-plan:5551155c-c480-48c8-a6c4-afe2b9906ef2",
+        "BackupPlanId": "5551155c-c480-48c8-a6c4-afe2b9906ef2",
+        "CreationDate": "2026-11-23T14:33:09.392000+01:00",
+        "VersionId": "YzYyMWU2ZjUtNzIzZi00MGQ1LWFlNDEtMzAwNTk1YTA0OTVk",
+        "BackupPlanName": "demo-backup-plan"
+    }
+]
+[
+    "demo-assignment-ebs"
+]
+backup.amazonaws.com
+{
+    "TimePeriod": {
+        "Start": "2026-11-22",
+        "End": "2026-11-23"
+    },
+    "Total": {},
+    "Groups": [
+        {
+            "Keys": [
+                "AmazonCloudWatch"
+            ],
+            "Metrics": {
+                "UnblendedCost": {
+                    "Amount": "0",
+                    "Unit": "USD"
+                }
+            }
+        }
+    ],
+    "Estimated": true
+}

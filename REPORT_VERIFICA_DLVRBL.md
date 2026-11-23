@@ -2,8 +2,8 @@
 
 Fonti confrontate (repo `its-javadizavieh`, cartella `labs/`):
 
-- Sicurezza AWS: sorgenti 01-11, DLVRBL 01-10 (**manca il DLVRBL del lab 11 Backup e ripristino**)
-- VM Reti Storage: sorgenti 01-13, DLVRBL 1-11 (**mancano i DLVRBL dei lab 12 Bilanciamento/IAM e 13 CloudTrail/CloudWatch**)
+- Sicurezza AWS: sorgenti 01-11, DLVRBL 01-11 (il lab 11 Backup e ripristino è stato aggiunto il 18/11/2026)
+- VM Reti Storage: sorgenti 01-14, DLVRBL 1-14 (i lab 12 Bilanciamento/IAM, 13 CloudTrail/CloudWatch e 14 Backup/costi sono stati aggiunti il 23/11/2026)
 - Serverless: sorgenti 01-18 (08 e 09 sono un solo file), DLVRBL 01-18 (tutti coperti)
 
 Criteri: (1) il DLVRBL contiene tutte le informazioni tecniche per rifare il lab; (2) italiano e contenuto sembrano scritti da uno studente che padroneggia il tema.
@@ -16,7 +16,7 @@ Dopo la prima verifica sono stati corretti tutti i punti risolvibili senza un ac
 |---|---|---|
 | Serverless | Alta. Calcoli, costi, CORS, `jq`, break-even e classificazione RAEE corretti; restano prove da eseguire (lab 09, 11, 12, 14, 17, 18) | Alta nei lab 06-18; accenti e frasi sistemati nei lab 01-05 |
 | Sicurezza | Alta. Aggiunti step 9 (lab 01), schemi VPN/Direct Connect (07), motivazioni A-D (08), controlli motivati (09), schede e responsabili per caso (10) | Media-alta. Restano alcune evidenze solo dichiarate (non osservate) |
-| VM Reti Storage | Media-alta. Cleanup completi e autonomi, nomi coerenti, scelta Storage Gateway motivata | Media. I lab 1-7 restano con valori illustrativi finché non si esegue il Learner Lab |
+| VM Reti Storage | Media-alta. Cleanup completi e autonomi, nomi coerenti, scelta Storage Gateway motivata | Media nei lab 1-7 (valori illustrativi finché non si esegue il Learner Lab); medio-alta nei lab 12-14, eseguiti con dati reali ma con tre lacune dichiarate (vedi sotto) |
 
 ## Cosa è stato corretto
 
@@ -83,7 +83,7 @@ Dopo la prima verifica sono stati corretti tutti i punti risolvibili senza un ac
 - Verificare con il Pricing Calculator le cifre ricalcolate a mano in Serverless 03 e 04.
 - Scambio con un collega (Sicurezza 01 step 9).
 - Allegare gli screenshot o i log citati nei DLVRBL dove servono come evidenza.
-- DLVRBL mancanti: Sicurezza 11, VM 12 e 13 (se fanno parte della consegna).
+- DLVRBL mancanti: nessuno (Sicurezza 11 e VM 12-14 aggiunti). Restano da allineare gli script `WholeCourseProcedure.sh` (vedi sezione finale).
 - Terraform: i lab Sicurezza 06-10 dichiarano "creato con Terraform" e un `terraform destroy` con 36 risorse. Il lab non lo richiede e il codice non è nel repo: allegarlo o indicare che la procedura CLI è equivalente. Nei DLVRBL VM 8-11 la dicitura è stata sostituita da quella reale (AWS CLI).
 
 ## Limiti di questa verifica
@@ -122,5 +122,29 @@ Limiti: gli screenshot non sono schermate della console AWS ma output di termina
 ### Da decidere o confermare
 - Nomi di bucket (`sicurezza02-riccardogouthier`, `lab07-trigger-gouthier`, `lab14-*-gouthier`, `lab15-lifecycle-riccardogouthier`): mantenuti nei DLVRBL perché derivano da test passati dello studente; nei test di verifica è stato aggiunto un suffisso perché risultavano già occupati.
 - Serverless 06: il DLVRBL riporta ora sia il rilevamento studente sia il rilevamento di verifica (a caldo a 128 MB: 13,61 ms contro 1,63 ms).
-- Terraform: citato in Sicurezza 06-10 senza codice nel repository; si aggiunge solo se un laboratorio lo richiede esplicitamente.
-- Sicurezza 11, VM 12 e 13: in corso di esecuzione a cura dello studente (in attesa).
+- Terraform: il codice di Sicurezza 06-11 e VM 8-14 ora è nelle cartelle `Terraform-lab-*` di ogni corso.
+- Sicurezza 11 e VM 12-14: eseguiti il 18/11 e il 23/11/2026 con IaC (Terraform) più AWS CLI, con screenshot reali della console (`.jpg`); vedi la sezione "Lab 12-14 VM Reti Storage".
+
+## Lab 12-14 VM Reti Storage: commenti e giudizi (eseguiti il 23/11/2026)
+
+Eseguiti sul Learner Lab con Terraform (istanza, volume, snapshot, SNS, allarmi, AWS Backup) e AWS CLI (S3, CloudTrail, simulazione IAM). 12 screenshot reali della console nel Google Doc e in `screenshots-vm-reti-storage/lab-12..14/`. Tutte le risorse eliminate e verificate.
+
+| Lab | Cosa funziona | Giudizio | Cosa manca o è debole |
+|---|---|---|---|
+| 12 | Metriche reali confrontate con la capacità del volume (circa 17 operazioni/s contro 3.000 IOPS, coda al massimo 0,09, CPU al 55,8%); conclusione "nessun collo di bottiglia" motivata e limitata al test; snapshot e versioning verificati; policy simulata con 4 decisioni; nessun ruolo creato né modificato | Buono. Il più solido dei tre: dati osservati, non illustrativi, e distinzione chiara tra simulazione e permessi reali | Snapshot fatto su un volume ancora vuoto (`0 B`): prova che lo snapshot esiste, non che salvi dati. Nel bucket c'è un solo oggetto, quindi il versioning è mostrato solo come impostazione, non con più versioni. Carico generato da me e breve. L'output della simulazione non ha uno screenshot (è solo testo nella consegna). `file://` sul JSON non ha funzionato in Git Bash: usata la policy inline |
+| 13 | Trail attivo con file consegnati su S3; evento `CreateVolume`/`DeleteVolume` trovato senza errori; allarme CPU andato davvero in ALARM e azione SNS eseguita (cronologia), senza forzare lo stato | Medio-buono. Ottima la prova su S3 e l'allarme reale; incompleto sul percorso email | Sottoscrizione email SNS non creata: il topic ha 0 sottoscrizioni, quindi la ricezione della notifica non è verificata (richiesta esplicita del lab non soddisfatta). Event record non aperto (solo elenco). Screenshot degli allarmi con entrambi in `OK`: lo stato `ALARM` è nel testo ma non in un'immagine. Trail e allarmi creati con CLI/Terraform, non dal wizard della console |
+| 14 | RPO/RTO e strategia motivati e dichiarati come obiettivi, non misurati; piano, regola e assegnazione con `LabRole` (nessun ruolo creato); Cost Explorer con dati reali (0,40 $, 23 servizi) e azione di ottimizzazione legata ai dati | Medio. Corretto e onesto, ma il backup è solo configurato | 0 backup job: nessun backup completato né ripristino provato. Nessuno screenshot del vault né delle risorse EC2/NAT confrontate con la spesa. La frase sui controlli (EC2, volumi, snapshot, NAT Gateway) è stata corretta: snapshot e NAT Gateway sono dichiarati controllati solo a fine cleanup |
+
+Trasversale ai tre: testo del Doc in prima persona e in italiano semplice; la consegna `.md` contiene tabelle, limiti e comandi; gli screenshot del Doc sono ridimensionati e a bassa leggibilità per le colonne strette.
+
+## Falle, consegne mancate ed errori da segnalare
+
+Voci già risolte o spiegate sono state tolte. Restano i compiti rimandati (contrassegnati `**`) e le voci da fare.
+
+### Consegne mancate o incomplete
+1. ** **VM Lab 14, nessun backup job eseguito**: non c'è prova di un backup completato né di ripristino.
+2. ** **`CORSO_VM_RETI_STORAGE-WholeCourseProcedure.sh` si ferma al lab 11** e **`CORSO_SICUREZZA_AWS-WholeCourseProcedure.sh` non contiene il lab 11**: gli script non includono i lab nuovi.
+3. **Serverless 15 e 12**: prove TTL/PITR ed X-Ray Service Map non completate. Non eseguite in questa passata: le credenziali del Learner Lab sono scadute (`InvalidClientTokenId`); servono credenziali nuove.
+
+### Nota
+`Terraform-lab-08-11-vm-reti-storage` ricostruisce il codice delle risorse di rete, volume, EFS e istanze dei lab VM 8-11 dal file di lavoro originale. Passa `terraform fmt`, ma non è stato rieseguito `terraform apply` in questa passata.
