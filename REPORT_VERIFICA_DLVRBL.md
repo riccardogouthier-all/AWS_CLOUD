@@ -96,7 +96,7 @@ Dopo la prima verifica sono stati corretti tutti i punti risolvibili senza un ac
 
 ## Verifica eseguita su AWS Learner Lab (17-18/11/2026)
 
-Le procedure CLI dei DLVRBL sono state eseguite su un account Learner Lab (us-east-1), blocco per blocco, con uno screenshot per passo in `CORSO_*/screenshots-<corso>/lab-N/` (immagini PNG dei comandi e dell'output reale, più i log `log-*.txt`). Eseguiti: Sicurezza 1-10, VM Reti Storage 1-11, Serverless 1-18 (i lab 1, 3, 4 e 5 sono calcoli e controlli locali). Tutte le risorse sono state eliminate; restano solo un segreto e una chiave KMS in cancellazione pianificata (lab Sicurezza).
+Le procedure CLI dei DLVRBL sono state eseguite su un account Learner Lab (us-east-1), blocco per blocco, con uno screenshot per passo in `CORSO_*/Lab-NN/screenshots/` (immagini PNG dei comandi e dell'output reale, più i log `log-*.txt`). Eseguiti: Sicurezza 1-10, VM Reti Storage 1-11, Serverless 1-18 (i lab 1, 3, 4 e 5 sono calcoli e controlli locali). Tutte le risorse sono state eliminate; restano solo un segreto e una chiave KMS in cancellazione pianificata (lab Sicurezza).
 
 Limiti: gli screenshot non sono schermate della console AWS ma output di terminale; alcuni lab (Serverless 15-17, Sicurezza 1-5) hanno un solo screenshot per blocco perché la procedura non ha commenti di passo; la prova di scadenza TTL e il ripristino PITR (Serverless 15) e la prova X-Ray Service Map (Serverless 12, `AccessDenied`) non sono stati completati.
 
@@ -122,12 +122,12 @@ Limiti: gli screenshot non sono schermate della console AWS ma output di termina
 ### Da decidere o confermare
 - Nomi di bucket (`sicurezza02-riccardogouthier`, `lab07-trigger-gouthier`, `lab14-*-gouthier`, `lab15-lifecycle-riccardogouthier`): mantenuti nei DLVRBL perché derivano da test passati dello studente; nei test di verifica è stato aggiunto un suffisso perché risultavano già occupati.
 - Serverless 06: il DLVRBL riporta ora sia il rilevamento studente sia il rilevamento di verifica (a caldo a 128 MB: 13,61 ms contro 1,63 ms).
-- Terraform: il codice di Sicurezza 06-11 e VM 8-14 ora è nelle cartelle `Terraform-lab-*` di ogni corso.
+- Terraform: il codice di Sicurezza 06-11 e VM 8-14 ora è in `terraform/` di ogni corso.
 - Sicurezza 11 e VM 12-14: eseguiti il 18/11 e il 23/11/2026 con IaC (Terraform) più AWS CLI, con screenshot reali della console (`.jpg`); vedi la sezione "Lab 12-14 VM Reti Storage".
 
 ## Lab 12-14 VM Reti Storage: commenti e giudizi (eseguiti il 23/11/2026)
 
-Eseguiti sul Learner Lab con Terraform (istanza, volume, snapshot, SNS, allarmi, AWS Backup) e AWS CLI (S3, CloudTrail, simulazione IAM). 12 screenshot reali della console nel Google Doc e in `screenshots-vm-reti-storage/lab-12..14/`. Tutte le risorse eliminate e verificate.
+Eseguiti sul Learner Lab con Terraform (istanza, volume, snapshot, SNS, allarmi, AWS Backup) e AWS CLI (S3, CloudTrail, simulazione IAM). 12 screenshot reali della console nel Google Doc e in `AWS_VM_RETI_STORAGE/Lab-12..14/screenshots/`. Tutte le risorse eliminate e verificate.
 
 | Lab | Cosa funziona | Giudizio | Cosa manca o è debole |
 |---|---|---|---|
@@ -147,4 +147,4 @@ Voci già risolte o spiegate sono state tolte. Restano i compiti rimandati (cont
 3. **Serverless 15 e 12**: prove TTL/PITR ed X-Ray Service Map non completate. Non eseguite in questa passata: le credenziali del Learner Lab sono scadute (`InvalidClientTokenId`); servono credenziali nuove.
 
 ### Nota
-`Terraform-lab-08-11-vm-reti-storage` ricostruisce il codice delle risorse di rete, volume, EFS e istanze dei lab VM 8-11 dal file di lavoro originale. Passa `terraform fmt`, ma non è stato rieseguito `terraform apply` in questa passata.
+`AWS_VM_RETI_STORAGE/terraform/Terraform-lab-08-11-vm-reti-storage` ricostruisce il codice delle risorse di rete, volume, EFS e istanze dei lab VM 8-11 dal file di lavoro originale. Passa `terraform fmt`, ma non è stato rieseguito `terraform apply` in questa passata.
